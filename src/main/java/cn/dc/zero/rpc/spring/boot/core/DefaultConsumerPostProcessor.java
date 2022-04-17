@@ -3,6 +3,7 @@ package cn.dc.zero.rpc.spring.boot.core;
 
 import cn.dc.zero.rpc.core.config.ConsumerConfig;
 import cn.dc.zero.rpc.core.config.RegistryConfig;
+import cn.dc.zero.rpc.core.util.StringUtils;
 import cn.dc.zero.rpc.spring.boot.annotion.ZeroRpcReference;
 import cn.dc.zero.rpc.spring.boot.config.ConsumerBootConfig;
 import cn.dc.zero.rpc.spring.boot.config.RegistryBootConfig;
@@ -47,10 +48,15 @@ public class DefaultConsumerPostProcessor implements BeanPostProcessor {
             ConsumerConfig consumerConfig = new ConsumerConfig();
 
             consumerConfig.setProxy(consumerBootConfig.getProxy());
-            consumerConfig.setUniqueId(reference.uniqueId());
+            if(StringUtils.isBlank(reference.interfaceId())){
+                consumerConfig.setInterfaceId(reference.interfaceType().getTypeName());
+            }else{
+                consumerConfig.setInterfaceId(reference.interfaceId());
+            }
+            consumerConfig.setUniqueId(StringUtils.isBlank(reference.uniqueId()) ?consumerConfig.getInterfaceId():reference.uniqueId());
             consumerConfig.setInvokeType(reference.invokeType());
+
             consumerConfig.setBalancer(consumerBootConfig.getBalance());
-            consumerConfig.setInterfaceId(reference.interfaceId() == null?field.getType().getName():reference.interfaceId());
             List<RegistryConfig> registryConfigs = new ArrayList<>();
             registryConfigs.add(registryBootConfig.buildProviderRegistryConfig());
             consumerConfig.setRegistryConfigs(registryConfigs);

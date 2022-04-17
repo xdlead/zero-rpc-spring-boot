@@ -97,6 +97,8 @@ public class ServerBootConfig {
         nodeInfo.setNodeId(nodeId);
         nodeInfo.setNodeGroup(nodeGroup);
         nodeInfo.setNodeIdentify(nodeIdentify);
+
+        serverConfig.setNodeInfo(nodeInfo);
         return serverConfig;
     }
 }

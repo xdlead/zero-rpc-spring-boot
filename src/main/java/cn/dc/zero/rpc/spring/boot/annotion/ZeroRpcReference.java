@@ -22,4 +22,6 @@ public @interface ZeroRpcReference {
     String invokeType() default "sync";
 
     String interfaceId();
+
+    Class<?> interfaceType() default void.class;
 }

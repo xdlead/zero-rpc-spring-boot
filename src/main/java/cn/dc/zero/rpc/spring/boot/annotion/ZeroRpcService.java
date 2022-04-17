@@ -29,7 +29,7 @@ public @interface ZeroRpcService {
 
     String nodeIdentify() default  "";
 
-
+    Class<?> interfaceType() default void.class;
 
 
 }
